@@ -14,7 +14,7 @@
     #status { margin: 0; padding: 8px; background: white; }
     #panel { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: white; border-top: 1px solid black; pointer-events: auto; }
     #panel p { margin: 4px 0; }
-    button, select, input { min-height: 36px; vertical-align: middle; }
+    button, select { min-height: 36px; vertical-align: middle; }
     :xr-overlay { background: transparent; }
   </style>
 </head>
@@ -30,7 +30,14 @@
             <option value="torus">Тор</option>
           </select>
         </label>
-        <label>Цвет: <input id="color" type="color" value="#2196f3"></label>
+        <label>Цвет:
+          <select id="color">
+            <option value="#2196f3">Синий</option>
+            <option value="#f44336">Красный</option>
+            <option value="#4caf50">Зелёный</option>
+            <option value="#ffeb3b">Жёлтый</option>
+          </select>
+        </label>
       </p>
       <p>
         <button id="left">−15°</button>

@@ -11,7 +11,7 @@ export class UIController {
     // Кнопки панели не должны одновременно размещать объект в AR.
     panel.addEventListener('beforexrselect', event => event.preventDefault());
     shape.onchange = () => model.setModel(shape.value);
-    color.oninput = () => model.setColor(color.value);
+    color.onchange = () => model.setColor(color.value);
     document.querySelector('#left').onclick = () => model.rotate(-Math.PI / 12);
     document.querySelector('#right').onclick = () => model.rotate(Math.PI / 12);
     spin.onclick = () => {
