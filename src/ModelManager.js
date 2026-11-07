@@ -11,11 +11,14 @@ export class ModelManager {
     this.setModel('cube');
   }
   setModel(kind) {
-    const geometry = kind === 'sphere'
-      ? new THREE.SphereGeometry(.12, 40, 24)
-      : kind === 'torus'
-        ? new THREE.TorusGeometry(.085, .035, 20, 48)
-        : new THREE.BoxGeometry(.2, .2, .2);
+    let geometry;
+    if (kind === 'sphere') {
+      geometry = new THREE.SphereGeometry(.12, 40, 24);
+    } else if (kind === 'torus') {
+      geometry = new THREE.TorusGeometry(.085, .035, 20, 48);
+    } else {
+      geometry = new THREE.BoxGeometry(.2, .2, .2);
+    }
     if (this.mesh) {
       this.root.remove(this.mesh);
       this.mesh.geometry.dispose();
@@ -30,7 +33,7 @@ export class ModelManager {
   rotate(angle) { this.root.rotation.y += angle; }
   update(dt) { if (this.autoRotate) this.rotate(dt * .7); }
   place(matrix) {
-    // Horizontal surfaces: preserve UI rotation while updating the hit-test position.
+    // Меняем только положение, сохраняя поворот, заданный кнопками.
     this.root.position.setFromMatrixPosition(matrix);
     this.root.visible = true;
   }

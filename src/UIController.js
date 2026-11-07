@@ -4,12 +4,16 @@ export class UIController {
     this.start = document.querySelector('#start');
     this.exit = document.querySelector('#exit');
     const panel = document.querySelector('#panel');
+    const shape = document.querySelector('#model');
+    const color = document.querySelector('#color');
+    const spin = document.querySelector('#spin');
+
+    // Кнопки панели не должны одновременно размещать объект в AR.
     panel.addEventListener('beforexrselect', event => event.preventDefault());
-    document.querySelector('#model').onchange = e => model.setModel(e.target.value);
-    document.querySelector('#color').oninput = e => model.setColor(e.target.value);
+    shape.onchange = () => model.setModel(shape.value);
+    color.oninput = () => model.setColor(color.value);
     document.querySelector('#left').onclick = () => model.rotate(-Math.PI / 12);
     document.querySelector('#right').onclick = () => model.rotate(Math.PI / 12);
-    const spin = document.querySelector('#spin');
     spin.onclick = () => {
       model.autoRotate = !model.autoRotate;
       spin.setAttribute('aria-pressed', String(model.autoRotate));
@@ -17,13 +21,13 @@ export class UIController {
     };
     document.querySelector('#reset').onclick = () => {
       model.reset();
-      document.querySelector('#model').value = 'cube';
-      document.querySelector('#color').value = '#2196f3';
+      shape.value = 'cube';
+      color.value = '#2196f3';
       spin.setAttribute('aria-pressed', 'false');
       spin.textContent = 'Автовращение';
     };
-    this.start.onclick = () => start();
-    this.exit.onclick = () => stop();
+    this.start.onclick = start;
+    this.exit.onclick = stop;
   }
   message(text) { this.status.textContent = text; }
   setAR(active) {
