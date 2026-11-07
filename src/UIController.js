@@ -1,6 +1,5 @@
 export class UIController {
   constructor(model, start, stop) {
-    this.status = document.querySelector('#status');
     this.start = document.querySelector('#start');
     this.exit = document.querySelector('#exit');
     const panel = document.querySelector('#panel');
@@ -29,7 +28,6 @@ export class UIController {
     this.start.onclick = start;
     this.exit.onclick = stop;
   }
-  message(text) { this.status.textContent = text; }
   setAR(active) {
     this.start.hidden = active;
     this.exit.hidden = !active;

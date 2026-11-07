@@ -14,7 +14,6 @@ export class ARController {
     controller.addEventListener('select', () => {
       if (this.reticle.visible) {
         model.place(this.reticle.matrix);
-        ui.message('Объект размещён. Цвет, форма и вращение доступны внизу.');
       }
     });
     scene.add(controller);
@@ -24,11 +23,11 @@ export class ARController {
     const supported = !!navigator.xr && await navigator.xr.isSessionSupported('immersive-ar').catch(() => false);
     this.ui.start.disabled = !supported;
     this.ui.start.textContent = supported ? 'Начать AR' : 'AR недоступен в этом браузере';
-    this.ui.message('Предпросмотр: меняйте цвет, форму и вращение объекта.');
   }
   async start() {
     if (this.session || this.starting) return;
     this.starting = true;
+    this.ui.start.textContent = 'Начать AR';
     let session;
     try {
       session = await navigator.xr.requestSession('immersive-ar', {
@@ -49,11 +48,11 @@ export class ARController {
       this.scene.background = null;
       this.renderer.setClearColor(0x000000, 0);
       this.ui.setAR(true);
-      this.ui.message('Объект появится перед камерой. Для переноса на поверхность найдите зелёное кольцо и коснитесь экрана.');
     } catch (error) {
       if (session) await session.end().catch(() => {});
       this.cleanup();
-      this.ui.message('Не удалось запустить AR: ' + error.message);
+      console.error('Не удалось запустить AR:', error);
+      this.ui.start.textContent = 'Ошибка AR — повторить';
     } finally { this.starting = false; }
   }
   async stop() { if (this.session) await this.session.end(); }
@@ -68,7 +67,6 @@ export class ARController {
     this.model.root.position.set(0, 0, 0);
     this.scene.background = new THREE.Color(0xedf1f6);
     this.ui.setAR(false);
-    this.ui.message('Предпросмотр. AR-сессия завершена.');
   }
   update(frame) {
     if (!frame || !this.source) return;
@@ -81,7 +79,6 @@ export class ARController {
         point.y -= 0.1;
         this.model.place(new THREE.Matrix4().makeTranslation(point.x, point.y, point.z));
         this.placeInFront = false;
-        this.ui.message('Объект установлен перед вами и остаётся в пространстве. «Передо мной» возвращает его в поле зрения.');
       }
     }
     const result = frame.getHitTestResults(this.source)[0];
